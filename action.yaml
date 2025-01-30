@@ -1,0 +1,42 @@
+name: 'normalize-version'
+description: 'Very simple action that normalizes given version'
+author: 'CDQ AG'
+
+branding:
+  icon: 'italic'
+  color: 'white'
+
+inputs:
+  version:
+    description: 'Version to be normalized'
+    required: true
+
+outputs:
+  semver:
+    description: 'Version in semver format'
+    value: ${{ steps.main.outputs.semver }}
+
+  major:
+    description: 'Major Version'
+    value: ${{ steps.main.outputs.major }}
+
+runs:
+  using: composite
+  steps:
+    - id: main
+      shell: bash
+      env:
+        VERSION: ${{ inputs.version }}
+      run: |
+        MAJOR=${VERSION%%.*}
+
+        if [[ $MAJOR != v* ]]; then
+          MAJOR=v${MAJOR:1}
+        fi
+
+        if [[ $VERSION != v* ]]; then
+          VERSION=v$VERSION
+        fi
+
+        echo "major=$MAJOR" >> $GITHUB_OUTPUT
+        echo "semver=$VERSION" >> $GITHUB_OUTPUT
