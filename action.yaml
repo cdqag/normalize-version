@@ -28,15 +28,18 @@ runs:
       env:
         VERSION: ${{ inputs.version }}
       run: |
+        if [[ $VERSION != v* ]]; then
+          VERSION=v$VERSION
+        fi
+
         MAJOR=${VERSION%%.*}
 
         if [[ $MAJOR != v* ]]; then
           MAJOR=v${MAJOR:1}
         fi
 
-        if [[ $VERSION != v* ]]; then
-          VERSION=v$VERSION
-        fi
+        echo "semver: $VERSION"
+        echo "major: $MAJOR"
 
         echo "major=$MAJOR" >> $GITHUB_OUTPUT
         echo "semver=$VERSION" >> $GITHUB_OUTPUT
