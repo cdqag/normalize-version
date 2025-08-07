@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - id: version
-      uses: cdqag/normalize-version@v1
+      uses: cdqag/action-normalize-version@v1
       with:
         version: ${{ inputs.version }}
 
